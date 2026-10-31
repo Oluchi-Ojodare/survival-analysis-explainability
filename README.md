@@ -18,6 +18,36 @@ This project examines two related questions:
 
 The project also investigates whether using overlapping training samples makes feature-importance rankings appear more stable than they actually are.
 
+[View the full analysis notebook](survival_analysis_gbsg2.ipynb)
+
+## Key Visual Results
+
+The following figures highlight the project's main findings across predictive performance, risk stratification, and feature-importance stability.
+
+### 1. Predictive Performance Across Training Sample Sizes
+
+This figure compares the predictive performance of Cox Proportional Hazards, Random Survival Forest, and Gradient-Boosted Survival models as the training sample size increases.
+
+![Predictive performance by training sample size](images/01_predictive_performance_by_sample_size.png)
+
+### 2. Feature-Importance Ranking Stability
+
+This figure examines how consistently predictors are ranked as important across different training sample sizes and survival models.
+
+![Feature importance stability](images/02_feature_importance_stability.png)
+
+### 3. Patient Risk Stratification
+
+Kaplan–Meier curves show the observed survival experience of patients assigned to low-, medium-, and high-risk groups by the models.
+
+![Risk stratification Kaplan Meier curves](images/03_risk_stratification_kaplan_meier.png)
+
+### 4. Predictive Performance and Explanation Stability
+
+This figure brings together predictive performance and feature-importance ranking agreement, highlighting the distinction between model accuracy and explanation stability.
+
+![Performance versus explanation stability](images/04_performance_vs_explanation_stability_optional.png)
+
 ## Research Question
 
 **How does training sample size affect predictive performance and the stability of feature-importance rankings across different survival models?**
