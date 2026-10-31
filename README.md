@@ -3,6 +3,8 @@
 
 Investigating how training sample size affects predictive performance and feature-importance stability across survival models using the German Breast Cancer Study Group 2 (GBSG2) dataset.
 
+[View the full analysis notebook](survival_analysis_gbsg2.ipynb)
+
 ## Project Overview
 
 Survival analysis is used to study how long it takes for an event to occur, while accounting for patients whose event has not been observed during the study period.
