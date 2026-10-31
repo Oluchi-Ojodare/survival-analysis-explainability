@@ -3,80 +3,51 @@
 
 Investigating how training sample size affects predictive performance and feature-importance stability across survival models using the German Breast Cancer Study Group 2 (GBSG2) dataset.
 
-[View the full analysis notebook](survival_analysis_gbsg2.ipynb)
+[View the analysis notebook](survival_analysis_gbsg2.ipynb)
 
 ## Project Overview
 
-Survival analysis is used to study how long it takes for an event to occur, while accounting for patients whose event has not been observed during the study period.
+Survival analysis studies the time until an event occurs while accounting for observations in which the event has not been observed by the end of follow-up (censoring).
 
-Machine learning models can help identify patterns associated with patient outcomes. However, a model's predictive performance does not necessarily mean its explanations are consistent.
+Machine learning models can identify patterns associated with patient outcomes, but predictive performance does not necessarily mean that a model's explanations are consistent. This project examines the relationship between training sample size, predictive performance, and feature-importance stability.
 
-This project examines two related questions:
+The analysis addresses three questions:
 
 1. How does training sample size affect the predictive performance of survival models?
-2. How does training sample size affect the stability of feature-importance rankings when models are trained on different patient samples?
-
-The project also investigates whether using overlapping training samples makes feature-importance rankings appear more stable than they actually are.
-
-[View the full analysis notebook](survival_analysis_gbsg2.ipynb)
-
-## Reproducibility
-
-### 1. Clone the repository
-
-git clone https://github.com/Oluchi-Ojodare/survival-analysis-explainability.git
-
-### 2. Navigate to the project folder
-
-cd survival-analysis-explainability
-
-### 3. Create and activate a virtual environment
-
-python -m venv .venv
-
-### 4. Install dependencies
-
-pip install -r requirements.txt
-
-### 5. Launch Jupyter Notebook
-
-jupyter notebook
+2. How does training sample size affect the stability of feature-importance rankings across different patient samples?
+3. Does using overlapping training samples make feature-importance rankings appear more stable than using disjoint samples?
 
 ## Key Visual Results
 
-The following figures highlight the project's main findings across predictive performance, risk stratification, and feature-importance stability.
+The figures below summarize predictive performance, risk stratification, and feature-importance stability.
 
 ### 1. Predictive Performance Across Training Sample Sizes
 
-This figure compares the predictive performance of Cox Proportional Hazards, Random Survival Forest, and Gradient-Boosted Survival models as the training sample size increases.
+Compares Cox Proportional Hazards, Random Survival Forest, and Gradient-Boosted Survival models as training sample size changes.
 
 ![Predictive performance by training sample size](images/01_predictive_performance_by_sample_size.png)
 
 ### 2. Feature-Importance Ranking Stability
 
-This figure examines how consistently predictors are ranked as important across different training sample sizes and survival models.
+Shows how consistently predictors are ranked as important across training sample sizes and survival models.
 
 ![Feature importance stability](images/02_feature_importance_stability.png)
 
 ### 3. Patient Risk Stratification
 
-Kaplan–Meier curves show the observed survival experience of patients assigned to low-, medium-, and high-risk groups by the models.
+Kaplan–Meier curves show the observed survival experience of patients assigned to low-, medium-, and high-risk groups by each model.
 
 ![Risk stratification Kaplan Meier curves](images/03_risk_stratification_kaplan_meier.png)
 
 ### 4. Predictive Performance and Explanation Stability
 
-This figure brings together predictive performance and feature-importance ranking agreement, highlighting the distinction between model accuracy and explanation stability.
+Highlights the distinction between predictive performance and feature-importance ranking agreement.
 
 ![Performance versus explanation stability](images/04_performance_vs_explanation_stability_optional.png)
 
-## Research Question
-
-**How does training sample size affect predictive performance and the stability of feature-importance rankings across different survival models?**
-
 ## Dataset
 
-The analysis uses the German Breast Cancer Study Group 2 (GBSG2) dataset available through `scikit-survival`.
+The analysis uses the German Breast Cancer Study Group 2 (GBSG2) dataset, accessed through the `scikit-survival` Python package. No separate CSV download is required.
 
 - **Patients:** 686
 - **Predictors:** 8
@@ -84,9 +55,7 @@ The analysis uses the German Breast Cancer Study Group 2 (GBSG2) dataset availab
 - **Censored observations:** 387
 - **Missing values:** 0
 
-The event indicator represents recurrence or death. The follow-up time records the time to the event or the end of observation.
-
-The eight predictors are:
+The event indicator represents recurrence or death. Follow-up time records the time to the event or the end of observation.
 
 | Variable | Description |
 |---|---|
@@ -99,11 +68,10 @@ The eight predictors are:
 | `tgrade` | Tumor grade |
 | `tsize` | Tumor size |
 
-The data were divided into a stratified 75% training set (514 patients) and 25% test set (172 patients), using a fixed random seed.
+A stratified 75% training / 25% test split was created using a fixed random seed:
 
-### Dataset Access
-
-The German Breast Cancer Study Group 2 (GBSG2) dataset is accessed through the `scikit-survival` Python package. No separate CSV download is required.
+- **Training set:** 514 patients
+- **Test set:** 172 patients
 
 ## Models
 
@@ -117,7 +85,7 @@ The Cox model's functional form was selected using cross-validation. Random Surv
 
 ## Methodology
 
-The analysis follows these main steps:
+The analysis follows these steps:
 
 1. **Exploratory data analysis:** Examine predictor distributions, missing values, event rates, and overall survival patterns.
 2. **Preprocessing:** One-hot encode categorical variables, fitting the encoder on the training data only.
@@ -129,7 +97,7 @@ The analysis follows these main steps:
 8. **Sample-size experiment:** Train models using samples of 100, 150, 200, and 256 patients and compare rankings across independently drawn samples.
 9. **Overlap comparison:** Compare disjoint training samples with overlapping samples to assess how shared patients affect apparent ranking stability.
 
-The sample-size experiment uses 25 pairs per sample size. For the disjoint design, the two models in each pair are trained on non-overlapping patients. The overlapping design provides a comparison. A size-matched baseline estimates agreement when the same fitted model is evaluated with different permutation shuffles.
+The sample-size experiment uses 25 pairs per sample size. In the disjoint design, the two models in each pair are trained on non-overlapping patients. The overlapping design provides a comparison. A size-matched baseline estimates agreement when the same fitted model is evaluated using different permutation shuffles.
 
 ## Evaluation Metrics
 
@@ -152,7 +120,7 @@ Bootstrap confidence intervals and paired model comparisons were calculated for 
 
 ### 1. Predictive performance
 
-On the held-out test set, the Random Survival Forest had the highest Harrell's C-index (0.707), followed by Cox PH (0.698) and Gradient-Boosted Survival (0.689).
+On the held-out test set, Random Survival Forest had the highest Harrell's C-index (0.707), followed by Cox PH (0.698) and Gradient-Boosted Survival (0.689).
 
 | Model | Harrell's C | Uno's C | Mean TD AUC | IBS |
 |---|---:|---:|---:|---:|
@@ -160,11 +128,11 @@ On the held-out test set, the Random Survival Forest had the highest Harrell's C
 | Random Survival Forest | 0.707 | 0.687 | 0.758 | 0.160 |
 | Gradient-Boosted Survival | 0.689 | 0.670 | 0.731 | 0.163 |
 
-The paired bootstrap confidence intervals for differences in Harrell's C included zero. Therefore, the results do not establish a statistically clear performance difference between the three models.
+The paired bootstrap confidence intervals for differences in Harrell's C included zero. Therefore, these results do not establish a statistically clear performance difference between the three models.
 
 ### 2. Risk stratification
 
-All three models separated the test patients into low-, medium-, and high-risk groups with statistically significant differences in survival patterns:
+All three models separated test patients into low-, medium-, and high-risk groups with statistically significant differences in observed survival patterns.
 
 | Model | Log-rank p-value |
 |---|---:|
@@ -172,13 +140,11 @@ All three models separated the test patients into low-, medium-, and high-risk g
 | Random Survival Forest | 2.50 × 10⁻⁷ |
 | Gradient-Boosted Survival | 1.98 × 10⁻⁷ |
 
-These results suggest that each model's predicted risk scores captured meaningful differences in patient outcomes within this test set.
+These results suggest that each model's predicted risk scores captured differences in patient outcomes within this test set.
 
 ### 3. Training sample size and ranking stability
 
-Agreement between models trained on disjoint patient samples generally improved as sample size increased for Cox PH.
-
-For the tree-based models, improvements were less consistent across sample sizes.
+Agreement between models trained on disjoint patient samples generally improved as sample size increased for Cox PH. Improvements were less consistent across sample sizes for the tree-based models.
 
 **Spearman agreement between disjoint samples:**
 
@@ -194,11 +160,11 @@ The results suggest that larger training samples can improve ranking agreement, 
 
 The overlapping design generally produced higher ranking agreement than the disjoint design.
 
-For example, at 200 patients, the average Spearman agreement was:
+At 200 patients, average Spearman agreement was:
 
-- Cox PH: 0.784 with overlapping samples versus 0.644 with disjoint samples.
-- Random Survival Forest: 0.730 versus 0.690.
-- Gradient-Boosted Survival: 0.742 versus 0.658.
+- **Cox PH:** 0.784 with overlapping samples versus 0.644 with disjoint samples.
+- **Random Survival Forest:** 0.730 versus 0.690.
+- **Gradient-Boosted Survival:** 0.742 versus 0.658.
 
 This illustrates why shared observations between training samples matter when evaluating explanation stability.
 
@@ -222,20 +188,39 @@ These rankings describe model reliance on predictors; they should not be interpr
 
 ## Reproducibility
 
-The notebook was developed in Google Colab and uses a fixed global random seed. Long-running experiment results are cached to reduce unnecessary reruns.
+The notebook was developed in Google Colab and uses a fixed global random seed. Long-running experiment results are cached to reduce unnecessary reruns. The notebook records the package versions used in the executed environment.
 
-Main packages:
+### Setup
 
-- Python
-- NumPy
-- pandas
-- scikit-learn
-- scikit-survival
-- lifelines
-- SciPy
-- Matplotlib
+Clone the repository and move into the project directory:
 
-The notebook records the package versions used in the executed environment.
+```bash
+git clone https://github.com/Oluchi-Ojodare/survival-analysis-explainability.git
+cd survival-analysis-explainability
+```
+
+Create and activate a virtual environment.
+
+**Windows (PowerShell):**
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+**macOS / Linux:**
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Install the dependencies and launch Jupyter:
+
+```bash
+pip install -r requirements.txt
+jupyter notebook
+```
 
 ## Repository Structure
 
@@ -243,13 +228,13 @@ The notebook records the package versions used in the executed environment.
 survival-analysis-explainability/
 ├── README.md
 ├── requirements.txt
-├── notebooks/
-│   └── survival_analysis_gbsg2.ipynb
-├── data/
-│   └── README.md
-└── results/
-    ├── figures/
-    └── tables/
+├── .gitignore
+├── survival_analysis_gbsg2.ipynb
+└── images/
+    ├── 01_predictive_performance_by_sample_size.png
+    ├── 02_feature_importance_stability.png
+    ├── 03_risk_stratification_kaplan_meier.png
+    └── 04_performance_vs_explanation_stability_optional.png
 ```
 
 ## Future Work
