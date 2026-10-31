@@ -20,6 +20,28 @@ The project also investigates whether using overlapping training samples makes f
 
 [View the full analysis notebook](survival_analysis_gbsg2.ipynb)
 
+## Reproducibility
+
+### 1. Clone the repository
+
+git clone https://github.com/Oluchi-Ojodare/survival-analysis-explainability.git
+
+### 2. Navigate to the project folder
+
+cd survival-analysis-explainability
+
+### 3. Create and activate a virtual environment
+
+python -m venv .venv
+
+### 4. Install dependencies
+
+pip install -r requirements.txt
+
+### 5. Launch Jupyter Notebook
+
+jupyter notebook
+
 ## Key Visual Results
 
 The following figures highlight the project's main findings across predictive performance, risk stratification, and feature-importance stability.
