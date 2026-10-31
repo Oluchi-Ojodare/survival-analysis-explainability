@@ -101,6 +101,10 @@ The eight predictors are:
 
 The data were divided into a stratified 75% training set (514 patients) and 25% test set (172 patients), using a fixed random seed.
 
+### Dataset Access
+
+The German Breast Cancer Study Group 2 (GBSG2) dataset is accessed through the `scikit-survival` Python package. No separate CSV download is required.
+
 ## Models
 
 Three survival models were compared:
